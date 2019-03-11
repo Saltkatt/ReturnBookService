@@ -25,7 +25,7 @@ public class Controller {
     public Controller (RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-    
+
 
     /**
      * Receives user and book id, checks against stock-service
