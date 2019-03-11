@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,6 +25,7 @@ public class Controller {
     public Controller (RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
+    
 
     /**
      * Receives user and book id, checks against stock-service
@@ -67,12 +69,22 @@ public class Controller {
     }
 
     /**
-     * @return todays date
+     * @return the date of return
      */
     private String getReturnDate() {
         Calendar c = Calendar.getInstance();
         return c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" + Calendar.DAY_OF_MONTH;
     }
+
+    //Todo: figure out how get this message up before returnBook() is used.
+    private String getMessage(){
+        String message = "Please input your userId number and the bookId of the book you wish to return. " +
+                "\n Input the id numbers in the URL-bar in the following fashion: \n" +
+                "\n http://return-service/return/{userId}/{bookId}/";
+        return message;
+    }
+
+
 
 
 }
