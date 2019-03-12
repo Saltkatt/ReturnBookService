@@ -47,7 +47,7 @@ public class Controller {
         }
 
         //Todo: change bookId to available
-        restTemplate.put("http://library-stock-service/books/update/", bookId);
+        restTemplate.put("http://library-stock-service/books/return/", bookId, userId);
         logger.info("Message sent to library-stock-service");
 
         return new Receipt(book.getBookTitle(), book.getAuthors(),book.getReturnDate(),"Book has been returned");
