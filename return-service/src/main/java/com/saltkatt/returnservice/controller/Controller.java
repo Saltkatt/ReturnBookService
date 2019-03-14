@@ -26,18 +26,23 @@ public class Controller {
         this.restTemplate = restTemplate;
     }
 
+    @GetMapping("/hej")
+    public String hej(){
+        return "heeej";
+    }
 
     /**
-     * Receives user and book id, checks against stock-service
+     * Receives user and book id, checks against stock-service and sends userId and bookId
+     * to user-service and library-stock-service.
      * @param userId
      * @param bookId
      * @return
      */
     @GetMapping("/return/{userId}/{bookId}")
-    public Receipt returnBook(@PathVariable("userId") long userId, @PathVariable("bookId") long bookId){
+    public Receipt returnBook(@PathVariable("userId") Long userId, @PathVariable("bookId") long bookId){
         logger.info("A user has input a bookId");
         //call stock-service send in bookId
-        ResponseEntity<Book> response = restTemplate.getForEntity("http://library-stock-service/getOneBook/" + bookId, Book.class);
+        ResponseEntity<Book> response = restTemplate.getForEntity("http://localhost:8081/getOneBook/" + bookId, Book.class);
         Book book = response.getBody();
 
         //if no book has the bookId sent in the book does not exist.
@@ -46,9 +51,13 @@ public class Controller {
             return new Receipt ("", null, "", "This bookId does not seem to exist.");
         }
 
-        //Todo: change bookId to available
-        restTemplate.put("http://library-stock-service/books/return/", bookId, userId);
+        //Sends bookId and userId to library-stock-service
+        restTemplate.put("http://localhost:8081/books/return/", bookId, userId);
         logger.info("Message sent to library-stock-service");
+
+        //Sends userId and bookId to user-service
+        restTemplate.put("http://user-service/return-book/", userId, bookId);
+        logger.info("Message sent to UserService");
 
         return new Receipt(book.getBookTitle(), book.getAuthors(),book.getReturnDate(),"Book has been returned");
 
@@ -56,16 +65,6 @@ public class Controller {
          * Todo: should call method to remove book from user loanlist.
          */
         //userHasReturnedBook();
-    }
-
-    /**
-     * Sends userId and bookId to user-service to be removed from loanlist
-     * @param userId
-     * @param bookId
-     */
-    private void userHasReturnedBook(@PathVariable("userId") long userId, @PathVariable("bookId") long bookId) {
-        restTemplate.put("http://user-service/return-book/", userId, bookId);
-        logger.info("BookId sent to UserService");
     }
 
     /**
@@ -79,8 +78,8 @@ public class Controller {
     //Todo: figure out how get this message up before returnBook() is used.
     private String getMessage(){
         String message = "Please input your userId number and the bookId of the book you wish to return. " +
-                "\n Input the id numbers in the URL-bar in the following fashion: \n" +
-                "\n http://return-service/return/{userId}/{bookId}/";
+                "\nInput the id numbers in the URL-bar in the following fashion: \n" +
+                "\nhttp://return-service/return/{userId}/{bookId}/";
         return message;
     }
 
