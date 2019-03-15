@@ -5,7 +5,7 @@ import java.util.Set;
 public class Book {
 
     private long bookId;
-    private String bookTitle;
+    private String title;
     private Set<Author> authors;
     private boolean available;
     private String returnDate;
