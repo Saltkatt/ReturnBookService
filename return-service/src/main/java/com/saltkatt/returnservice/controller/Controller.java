@@ -39,7 +39,7 @@ public class Controller {
      */
     @GetMapping("/return/{userId}/{bookId}")
     public Receipt returnBook(@PathVariable("userId") Long userId, @PathVariable("bookId") long bookId){
-        
+
         User user;
 
         logger.info("A user has input a bookId");
