@@ -15,9 +15,9 @@ public class Book {
     public Book() {
     }
 
-    public Book(long bookId, String bookTitle, Set<Author> authors, boolean available, String returnDate, String postedAt, String lastUpdatedAt) {
+    public Book(long bookId, String title, Set<Author> authors, boolean available, String returnDate, String postedAt, String lastUpdatedAt) {
         this.bookId = bookId;
-        this.bookTitle = bookTitle;
+        this.title = title;
         this.authors = authors;
         this.available = available;
         this.returnDate = returnDate;
@@ -33,12 +33,12 @@ public class Book {
         this.bookId = bookId;
     }
 
-    public String getBookTitle() {
-        return bookTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Set<Author> getAuthors() {
