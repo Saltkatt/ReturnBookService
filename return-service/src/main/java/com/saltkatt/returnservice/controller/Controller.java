@@ -39,8 +39,7 @@ public class Controller {
      */
     @GetMapping("/return/{userId}/{bookId}")
     public Receipt returnBook(@PathVariable("userId") Long userId, @PathVariable("bookId") long bookId){
-
-        ResponseEntity<Book> response;
+        
         User user;
 
         logger.info("A user has input a bookId");
@@ -48,7 +47,7 @@ public class Controller {
         /**
          * Inform stock-service which book is being returned.
          */
-        response = restTemplate.exchange("http://storage-service/books/return/"
+        ResponseEntity<Book> response = restTemplate.exchange("http://storage-service/books/return/"
                 + bookId, HttpMethod.PUT, new HttpEntity<>(userId), Book.class);
         logger.info("Message sent to stock-service");
         if(response.getStatusCode() != HttpStatus.OK){
